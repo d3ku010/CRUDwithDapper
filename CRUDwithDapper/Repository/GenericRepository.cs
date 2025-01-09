@@ -35,10 +35,19 @@ namespace CRUDwithDapper.Repository
             using (var connection = _context.CreateConnection())
             {
                 string query = $"DELETE FROM {tableName} WHERE Id = @Id";
-                await connection.ExecuteAsync(query, new { Id = id });
+                var affectedRows = await connection.ExecuteAsync(query, new { Id = id });
+                if (affectedRows == 0)
+                {
+                    // Log that no rows were affected
+                    Console.WriteLine($"No records deleted from {tableName} with Id = {id}");
+                }
+                else
+                {
+                    // Log successful deletion
+                    Console.WriteLine($"Deleted {affectedRows} record(s) from {tableName} with Id = {id}");
+                }
             }
         }
-
 
 
 
@@ -88,7 +97,7 @@ namespace CRUDwithDapper.Repository
                 if (idProperty != null)
                 {
                     string updateQuery = $"UPDATE {_TableName} SET {string.Join(", ", _GetProperties
-                        .Where(p => p.Name != "Id").Select(p => p.Name + " = @"+ p.Name))}  WHERE Id = @Id";
+                        .Where(p => p.Name != "Id").Select(p => p.Name + " = @" + p.Name))}  WHERE Id = @Id";
                     await connection.ExecuteAsync(updateQuery, _DynamicParameters);
                 }
                 else

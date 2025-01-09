@@ -66,17 +66,19 @@ namespace CRUDwithDapper.Controllers
             }
             return View(branch);
         }
-        public async Task<IActionResult> Delete(Int64 id)
+        public async Task<IActionResult> Delete(long id)
         {
             var _Branch = await _iGenericRepository.GetById("Branch", id);
             return View(_Branch);
         }
 
-        [HttpDelete, ActionName("DeleteConfirmed")]
-        public async Task<IActionResult> DeleteConfirmed(Int64 id)
+        [HttpPost, ActionName("DeleteConfirmed")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(long id)
         {
             await _iGenericRepository.Delete("Branch", id);
             return RedirectToAction(nameof(Index));
         }
+
     }
 }
