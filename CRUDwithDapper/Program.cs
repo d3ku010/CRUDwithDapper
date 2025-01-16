@@ -1,7 +1,6 @@
 using CRUDwithDapper.Data;
 using CRUDwithDapper.Models;
 using CRUDwithDapper.Repository;
-using CRUDwithDapper.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
@@ -23,12 +22,12 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-app.MapStaticAssets();
+
+
 app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
 app.Run();
