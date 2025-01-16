@@ -26,7 +26,7 @@ jobs:
     # Build Docker image
     - name: Build Docker image
       run: |
-        docker build -t yourdockerhubusername/your-repo-name:latest .
+        docker build -t d3k010/dotnetprojects .
       working-directory: ./  # Ensure this is the correct directory for your Dockerfile
 
     # Log in to DockerHub
