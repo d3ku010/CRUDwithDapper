@@ -1,0 +1,30 @@
+# Use the official .NET SDK image as the build environment
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+# Set the working directory in the container
+WORKDIR /src
+
+# Copy the solution file and restore dependencies
+COPY ["CRUDwithDapper.sln", "./"]
+COPY ["CRUDwithDapper/CRUDwithDapper.csproj", "CRUDwithDapper/"]
+RUN dotnet restore "CRUDwithDapper.sln"
+
+# Copy the rest of the project files
+COPY . .
+
+# Build the application
+RUN dotnet build "CRUDwithDapper.sln" -c Release -o /app/build
+
+# Publish the application
+RUN dotnet publish "CRUDwithDapper.sln" -c Release -o /app/publish
+
+# Use the official .NET runtime image as the base for the final image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 80
+
+# Copy the published app to the base image
+COPY --from=build /app/publish .
+
+# Set the entry point for the container
+ENTRYPOINT ["dotnet", "CRUDwithDapper.dll"]
