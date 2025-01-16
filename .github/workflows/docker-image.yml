@@ -10,7 +10,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest  # Runs the job on the latest Ubuntu environment
 
     steps:
@@ -19,24 +18,20 @@ jobs:
       with:
         fetch-depth: 0
 
-    # Install Docker (if not available)
-    - name: Set up Docker Buildx
+    - name: Set up Docker Buildx (optional, for multi-platform builds)
       uses: docker/setup-buildx-action@v2
 
-    # Build Docker image
-    - name: Build Docker image
-      run: |
-        docker build -t d3k010/dotnetprojects -f CRUDwithDapper/Dockerfile .
-      working-directory: ./  # Ensure this is the correct directory for your Dockerfile
-
-    # Log in to DockerHub
     - name: Log in to DockerHub
       uses: docker/login-action@v2
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        username: ${{ secrets.DOCKER_USERNAME }}  # Replace with your DockerHub username secret
+        password: ${{ secrets.DOCKER_PASSWORD }}  # Replace with your DockerHub password secret
 
-    # Push Docker image
+    - name: Build Docker image
+      run: |
+        docker build -t d3k010/dotnetprojects:latest -f CRUDwithDapper/Dockerfile .
+      working-directory: ./  # Set the working directory to the root of your repo
+
     - name: Push Docker image
       run: |
-        docker push d3k010/dotnetprojects
+        docker push d3k010/dotnetprojects:latest
