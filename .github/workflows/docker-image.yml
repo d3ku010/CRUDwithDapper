@@ -26,7 +26,7 @@ jobs:
     # Build Docker image
     - name: Build Docker image
       run: |
-        docker build -t d3k010/dotnetprojects .
+        docker build -t d3k010/dotnetprojects -f CRUDwithDapper/Dockerfile .
       working-directory: ./  # Ensure this is the correct directory for your Dockerfile
 
     # Log in to DockerHub
