@@ -25,21 +25,21 @@ jobs:
 
     - name: Restore Dependencies
       run: dotnet restore
-      working-directory: ./CRUDwithDapper/CRUDwithDapper
+      working-directory: CRUDwithDapper/CRUDwithDapper
 
     - name: Run Unit Tests
       run: dotnet test --filter Category=Unit
-      working-directory: ./CRUDwithDapper/CRUDwithDapper
+      working-directory: CRUDwithDapper/CRUDwithDapper
 
     - name: Run Integration Tests
       run: dotnet test --filter Category=Integration
-      working-directory: ./CRUDwithDapper/CRUDwithDapper
+      working-directory: CRUDwithDapper/CRUDwithDapper
 
     - name: Upload Test Results
       uses: actions/upload-artifact@v3
       with:
         name: test-results
-        path: ./CRUDwithDapper/CRUDwithDapper/TestResults/
+        path: CRUDwithDapper/CRUDwithDapper/TestResults/
 
 
     - name: Set up Docker Buildx (optional, for multi-platform builds)
