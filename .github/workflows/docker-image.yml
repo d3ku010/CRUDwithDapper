@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest  # Runs the job on the latest Ubuntu environment
 
     steps:
@@ -17,6 +17,30 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v4
+      with: 
+        dotnet-version: 8.0.0
+
+    - name: Restore Dependencies
+      run: dotnet restore
+      working-directory: ./CRUDwithDapper/CRUDwithDapper
+
+    - name: Run Unit Tests
+      run: dotnet test --filter Category=Unit
+      working-directory: ./CRUDwithDapper/CRUDwithDapper
+
+    - name: Run Integration Tests
+      run: dotnet test --filter Category=Integration
+      working-directory: ./CRUDwithDapper/CRUDwithDapper
+
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: ./CRUDwithDapper/CRUDwithDapper/TestResults/
+
 
     - name: Set up Docker Buildx (optional, for multi-platform builds)
       uses: docker/setup-buildx-action@v2
@@ -29,9 +53,9 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t d3k010/dotnetprojects:latest -f CRUDwithDapper/Dockerfile .
+        docker build -t d3k010/dotnetprojects:linux -f CRUDwithDapper/Dockerfile .
       working-directory: ./  # Set the working directory to the root of your repo
 
     - name: Push Docker image
       run: |
-        docker push d3k010/dotnetprojects:latest
+        docker push d3k010/dotnetprojects:linux
