@@ -98,7 +98,7 @@ The **CRUDwithDapper** application is a web-based platform designed to perform *
 ---
 
 
-## Database Setup
+# Database Setup
 
 Before running the application, you must ensure the database and schema are set up correctly.
 
